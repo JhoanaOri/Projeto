@@ -12,3 +12,12 @@
     width: auto;
     text-align: center;
 }
+.logo {
+  width: 50%;
+  height: 50%;
+  background-size: 100%; 
+}
+.mpicture {
+    justify-content: center;
+    display: flex;
+}
