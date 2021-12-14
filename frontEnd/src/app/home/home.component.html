@@ -1,0 +1,12 @@
+<div class ="apresentacao">
+<h1>Seja Bem Vindo</h1>
+</div>
+<div class ="login" *ngIf="user && user.authenticate">
+    <p>Você está logado no sistema!</p>
+</div>
+<div class ="logout" *ngIf="!user || user == null || !user.authenticate">
+    <p>Você não está logado no sistema!</p>
+</div>
+<picture>
+    <img mat-card-lg-image src="../../assets/logo.png.png" alt="Photo">
+</picture>
