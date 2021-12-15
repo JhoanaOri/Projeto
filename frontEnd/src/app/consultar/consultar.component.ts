@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DialogComponent } from '../dialog/dialog.component';
+import { Authenticate } from '../shared/model/authenticate.model';
+import { AuthService } from '../shared/service/auth.service';
 import { BaseCrudService } from '../shared/service/base-crud.service';
 
 
@@ -34,13 +36,28 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class ConsultarComponent implements OnInit {
   displayedColumns: string[] = ['name', 'email', 'phone', 'id'];
   dataSource: any;
+  public user: Authenticate;
+  
   constructor(private service: BaseCrudService,
     private router: Router,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private authService: AuthService) { }
   
 
   ngOnInit(): void {
-    this.preencherGrid();
+    this.authService.getAuth().subscribe(x => {
+      this.user = Object.assign(x); // Busca o valor de user autenticado no sistema;      
+    });
+
+    if (!this.user) { // Verifica se o usuario é vazio, se for irá entrar no if
+      this.user = JSON.parse(localStorage.getItem('user')) as Authenticate; // Busca o usuario na sessão
+    }
+
+    if (this.user && this.user.authenticate) {
+      this.preencherGrid();
+    } else if (!this.user || !this.user.authenticate) {
+      this.router.navigate(['']);
+    }
   }
 
   private preencherGrid() {
